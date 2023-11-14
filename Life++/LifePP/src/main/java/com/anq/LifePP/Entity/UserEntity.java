@@ -1,6 +1,8 @@
 package com.anq.LifePP.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
@@ -10,9 +12,15 @@ import javax.persistence.Column;
 @Table(name="tblUser")
 public class UserEntity {
 	
-	@Id
+
 	@Column(name="username")
 	private String username;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
+	private int userid;
+	
 	@Column(name="fname")
 	private String fname;
 	@Column(name="lname")
@@ -98,5 +106,9 @@ public class UserEntity {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	
+	public int getUserId() {
+		return this.userid;
 	}
 }
