@@ -29,7 +29,6 @@ public class UserEntity {
 	private String password;
 	@Column(name="type")
 	private int type;
-	
 	public UserEntity() {}
 	
 	public UserEntity(String username, String fname, String lname, String email, int pnum, String gender,
