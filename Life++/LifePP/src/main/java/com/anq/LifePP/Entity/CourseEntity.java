@@ -17,15 +17,15 @@ public class CourseEntity {
 	private int courseID;
 	@Column(name="name")
 	private String name;
-	@Column(name="email")
-	private String email;
+	@Column(name="max")
+	private int max;
 	public CourseEntity() {}
 	
-	public CourseEntity(int courseID, String name, String email) {
+	public CourseEntity(int courseID, String name, int max) {
 		super();
 		this.courseID = courseID;
 		this.name = name;
-		this.email = email;
+		this.max = max;
 	}
 
 	public int getCourseID() {
@@ -44,11 +44,11 @@ public class CourseEntity {
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
+	public int getMax() {
+		return max;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setMax(int max ) {
+		this.max = max;
 	}
 }
