@@ -26,7 +26,7 @@ public class UserEntity {
 	@Column(name="email")
 	private String email;
 	@Column(name="pnum")
-	private int pnum;
+	private String pnum;
 	@Column(name="gender")
 	private String gender;
 	@Column(name="birthdate")
@@ -38,7 +38,7 @@ public class UserEntity {
 	
 	public UserEntity() {}
 
-	public UserEntity(int userid, String username, String fname, String lname, String email, int pnum, String gender,
+	public UserEntity(int userid, String username, String fname, String lname, String email, String pnum, String gender,
 			String birthdate, String password, int type) {
 		super();
 		this.userid = userid;
@@ -93,11 +93,11 @@ public class UserEntity {
 		this.email = email;
 	}
 
-	public int getPnum() {
+	public String getPnum() {
 		return pnum;
 	}
 
-	public void setPnum(int pnum) {
+	public void setPnum(String pnum) {
 		this.pnum = pnum;
 	}
 
