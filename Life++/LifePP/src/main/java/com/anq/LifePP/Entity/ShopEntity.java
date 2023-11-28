@@ -28,6 +28,17 @@ public class ShopEntity{
 		this.description = description;
 	}
 
+	@Column(name="deleted")
+	private boolean isDeleted = false;
+	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	public int getSid() {
 		return sid;
 	}

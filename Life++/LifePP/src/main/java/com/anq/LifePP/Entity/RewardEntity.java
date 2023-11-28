@@ -19,6 +19,16 @@ public class RewardEntity{
 	private String name;
 	@Column(name="quantity")
 	private int quantity;
+	@Column(name="deleted")
+	private boolean isDeleted = false;
+	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	
 	public RewardEntity() {}
 	

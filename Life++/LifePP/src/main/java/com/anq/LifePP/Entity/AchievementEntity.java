@@ -19,7 +19,17 @@ public class AchievementEntity {
 	private String name;
 	@Column(name="description")
 	private String description;
+	@Column(name="deleted")
+	private boolean isDeleted = false;
 	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public AchievementEntity() {}
 
 	public AchievementEntity(int achievementID, String name, String description) {

@@ -5,6 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import java.util.List;
+
 import javax.persistence.Column;
 
 
@@ -19,6 +23,19 @@ public class CourseEntity {
 	private String name;
 	@Column(name="max")
 	private int max;
+
+		
+	@Column(name="deleted")
+	private boolean isDeleted = false;
+	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public CourseEntity() {}
 	
 	public CourseEntity(int courseID, String name, int max) {

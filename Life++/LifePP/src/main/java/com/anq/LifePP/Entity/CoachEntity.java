@@ -19,6 +19,16 @@ public class CoachEntity {
 	private String name;
 	@Column(name="email")
 	private String email;
+	@Column(name="deleted")
+	private boolean isDeleted = false;
+	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	
 	public CoachEntity() {}
 	

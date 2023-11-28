@@ -27,7 +27,16 @@ public class QuestEntity {
     private boolean isCompleted;
 	@Column(name="achievement")
     private int achievement;
+	@Column(name="deleted")
+	private boolean isDeleted = false;
 	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	
 	public QuestEntity() {}
 
