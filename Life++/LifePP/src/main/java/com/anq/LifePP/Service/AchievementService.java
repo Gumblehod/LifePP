@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.anq.LifePP.Entity.AchievementEntity;
+import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Repository.AchievementRepository;
 
 @Service
@@ -41,10 +42,17 @@ public class AchievementService {
 		String msg = "";
 		
 			if(arepo.findById(id).get()!=null) {
-				arepo.deleteById(id);
-				msg = "Achievement " + id + "has been deleted";
+				if(arepo.findById(id).get().isDeleted()){
+					msg = "Achievement #" + id + " is already deleted!";
+				}
+				else{
+				AchievementEntity a = arepo.findById(id).get();
+				a.setDeleted(true);
+				msg = "Achievement #" + id + "has been deleted";
+				arepo.save(a);
+				}
 			}
-			else {msg = "Achievement " + id + "doesnt't exist";}
+			else {msg = "Achievement #" + id + " doesn't exist";}
 			
 			return msg;
 	}

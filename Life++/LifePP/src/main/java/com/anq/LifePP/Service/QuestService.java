@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anq.LifePP.Entity.ChallengeEntity;
 import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Repository.QuestRepository;
 
@@ -45,10 +46,17 @@ public class QuestService {
 		String msg = "";
 		
 			if(repo.findById(id).get()!=null) {
-				repo.deleteById(id);
-				msg = "Quest " + id + "has been deleted";
+				if(repo.findById(id).get().isDeleted()){
+					msg = "Quest #" + id + " is already deleted!";
+				}
+				else{
+				QuestEntity a = repo.findById(id).get();
+				a.setDeleted(true);
+				msg = "Quest #" + id + "has been deleted";
+				repo.save(a);
+				}
 			}
-			else {msg = "Quest " + id + "doesnt't exist";}
+			else {msg = "Quest #" + id + " doesn't exist";}
 			
 			return msg;
 	}

@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.ChallengeEntity;
 import com.anq.LifePP.Repository.ChallengeRepository;
 
@@ -47,10 +48,17 @@ public class ChallengeService {
 		String msg = "";
 		
 			if(repo.findById(id).get()!=null) {
-				repo.deleteById(id);
-				msg = "Challenge " + id + "has been deleted";
+				if(repo.findById(id).get().isDeleted()){
+					msg = "Challenge #" + id + " is already deleted!";
+				}
+				else{
+				ChallengeEntity a = repo.findById(id).get();
+				a.setDeleted(true);
+				msg = "Challenge #" + id + "has been deleted";
+				repo.save(a);
+				}
 			}
-			else {msg = "Challenge " + id + "doesnt't exist";}
+			else {msg = "Challenge #" + id + " doesn't exist";}
 			
 			return msg;
 	}

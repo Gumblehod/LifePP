@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anq.LifePP.Entity.ChallengeEntity;
 import com.anq.LifePP.Entity.ShopEntity;
 import com.anq.LifePP.Repository.ShopRepository;
 
@@ -41,10 +42,17 @@ public class ShopService {
 		String msg = "";
 		
 			if(repo.findById(id).get()!=null) {
-				repo.deleteById(id);
-				msg = "Shop " + id + "has been deleted";
+				if(repo.findById(id).get().isDeleted()){
+					msg = "Shop #" + id + " is already deleted!";
+				}
+				else{
+				ShopEntity a = repo.findById(id).get();
+				a.setDeleted(true);
+				msg = "Shop #" + id + "has been deleted";
+				repo.save(a);
+				}
 			}
-			else {msg = "Shop " + id + "doesnt't exist";}
+			else {msg = "Shop #" + id + " doesn't exist";}
 			
 			return msg;
 	}

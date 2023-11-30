@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anq.LifePP.Entity.ChallengeEntity;
 import com.anq.LifePP.Entity.CoachEntity;
 import com.anq.LifePP.Repository.CoachRepository;
 
@@ -41,10 +42,17 @@ public class CoachService {
 		String msg = "";
 		
 			if(repo.findById(id).get()!=null) {
-				repo.deleteById(id);
-				msg = "Coach " + id + "has been deleted";
+				if(repo.findById(id).get().isDeleted()){
+					msg = "Coach #" + id + " is already deleted!";
+				}
+				else{
+				CoachEntity a = repo.findById(id).get();
+				a.setDeleted(true);
+				msg = "Coach #" + id + "has been deleted";
+				repo.save(a);
+				}
 			}
-			else {msg = "Coach " + id + "doesnt't exist";}
+			else {msg = "Coach #" + id + " doesn't exist";}
 			
 			return msg;
 	}

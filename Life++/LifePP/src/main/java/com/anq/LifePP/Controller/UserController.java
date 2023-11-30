@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Service.UserService;
 
@@ -49,4 +50,10 @@ public class UserController {
     public String deleteStudent(@PathVariable int sid) {
     	return s.deleteUser(sid);
     }
+    
+    @PostMapping("/join/{userId}/{courseId}")
+    public String joinCourse(@PathVariable int userId, @PathVariable int courseId) {
+        return s.joinCourse(userId, courseId);
+    }
+    
 }

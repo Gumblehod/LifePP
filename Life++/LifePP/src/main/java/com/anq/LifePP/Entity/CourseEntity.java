@@ -5,8 +5,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -23,8 +26,18 @@ public class CourseEntity {
 	private String name;
 	@Column(name="max")
 	private int max;
+	
+	@ManyToMany(mappedBy = "joinedCourses")
+	private List<UserEntity> enrolledUsers = new ArrayList<>();
+	 
+	public List<UserEntity> getEnrolledUsers() {
+		return enrolledUsers;
+	}
 
-		
+	public void setEnrolledUsers(List<UserEntity> enrolledUsers) {
+		this.enrolledUsers = enrolledUsers;
+	}
+
 	@Column(name="deleted")
 	private boolean isDeleted = false;
 	

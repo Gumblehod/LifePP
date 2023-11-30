@@ -6,7 +6,10 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anq.LifePP.Entity.ChallengeEntity;
+import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.UserEntity;
+import com.anq.LifePP.Repository.CourseRepository;
 import com.anq.LifePP.Repository.UserRepository;
 
 @Service
@@ -14,6 +17,8 @@ public class UserService {
 	
 	@Autowired
 	UserRepository repo;
+	@Autowired
+	CourseRepository crepo;
 	
 	public UserEntity insertUser(UserEntity e) {
 		return repo.save(e);
@@ -48,11 +53,33 @@ public class UserService {
 		String msg = "";
 		
 			if(repo.findById(id).get()!=null) {
-				repo.deleteById(id);
-				msg = "User " + id + "has been deleted";
+				if(repo.findById(id).get().isDeleted()){
+					msg = "User #" + id + " is already deleted!";
+				}
+				else{
+				UserEntity a = repo.findById(id).get();
+				a.setDeleted(true);
+				msg = "User #" + id + "has been deleted";
+				repo.save(a);
+				}
 			}
-			else {msg = "User " + id + "doesnt't exist";}
-			
+			else {msg = "User #" + id + " doesn't exist";}
+
 			return msg;
+	}
+	
+	public String joinCourse(int userId, int courseId) {
+	    UserEntity user = repo.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+	    CourseEntity course = crepo.findById(courseId).orElseThrow(() -> new NoSuchElementException("Course not found"));
+
+	    List<CourseEntity> userCourses = user.getJoinedCourses();
+	    if (!userCourses.contains(course)) {
+	        userCourses.add(course);
+	        user.setJoinedCourses(userCourses);
+	        repo.save(user);
+	        return "User #" + userId + " successfully joined Course #" + courseId;
+	    } else {
+	        return "User #" + userId + " is already enrolled in Course #" + courseId;
+	    }
 	}
 }

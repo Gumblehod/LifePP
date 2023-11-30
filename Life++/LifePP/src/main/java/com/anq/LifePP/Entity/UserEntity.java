@@ -6,45 +6,60 @@ import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-
+import javax.persistence.ElementCollection;
 
 @Entity
-@Table(name="tblUser")
+@Table(name = "tblUser")
 public class UserEntity {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int userid;
-	
-	@Column(name="username")
+
+	@Column(name = "username")
 	private String username;
-	@Column(name="fname")
+	@Column(name = "fname")
 	private String fname;
-	@Column(name="lname")
+	@Column(name = "lname")
 	private String lname;
-	@Column(name="email")
+	@Column(name = "email")
 	private String email;
-	@Column(name="pnum")
+	@Column(name = "pnum")
 	private String pnum;
-	@Column(name="gender")
+	@Column(name = "gender")
 	private String gender;
-	@Column(name="birthdate")
+	@Column(name = "birthdate")
 	private String birthdate;
-	@Column(name="password")
+	@Column(name = "password")
 	private String password;
-	@Column(name="type")
+	@Column(name = "type")
 	private int type;
-	
-	@Column(name="deleted")
+
+	@ManyToMany
+	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	private List<CourseEntity> joinedCourses = new ArrayList<>();
+
+	@Column(name = "deleted")
 	private boolean isDeleted = false;
-	
+
+	public List<CourseEntity> getJoinedCourses() {
+		return joinedCourses;
+	}
+
+	public void setJoinedCourses(List<CourseEntity> joinedCourses) {
+		this.joinedCourses = joinedCourses;
+	}
+
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -53,11 +68,11 @@ public class UserEntity {
 		this.isDeleted = isDeleted;
 	}
 
-	
-	public UserEntity() {}
+	public UserEntity() {
+	}
 
 	public UserEntity(int userid, String username, String fname, String lname, String email, String pnum, String gender,
-			String birthdate, String password, int type) {
+			String birthdate, String password, int type, boolean isDeleted) {
 		super();
 		this.userid = userid;
 		this.username = username;
@@ -69,6 +84,7 @@ public class UserEntity {
 		this.birthdate = birthdate;
 		this.password = password;
 		this.type = type;
+		this.isDeleted = isDeleted;
 	}
 
 	public int getUserid() {
@@ -150,6 +166,4 @@ public class UserEntity {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
-	
 }
