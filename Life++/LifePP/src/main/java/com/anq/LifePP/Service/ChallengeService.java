@@ -6,60 +6,49 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.ChallengeEntity;
 import com.anq.LifePP.Repository.ChallengeRepository;
 
 @Service
 public class ChallengeService {
-	
+
 	@Autowired
 	ChallengeRepository repo;
-	
+
 	public ChallengeEntity insertChallenge(ChallengeEntity e) {
 		return repo.save(e);
 	}
-	
-	public List<ChallengeEntity> getallChallenge(){
+
+	public List<ChallengeEntity> getallChallenge() {
 		return repo.findAll();
 	}
-	
+
 	public ChallengeEntity updateChallenge(int id, ChallengeEntity c) {
-		ChallengeEntity e = new ChallengeEntity();
-			try {
-				e = repo.findById(id).get();
-				e.setTitle(c.getTitle());
-				e.setAchievement(c.getAchievement());
-				e.setCompleted(c.isCompleted());
-				e.setDescription(c.getDescription());
-				e.setStartdate(e.getStartdate());
-				e.setEnddate(c.getEnddate());
-				e.setProgress(c.getProgress());
-				e.setMaxProgress(c.getMaxProgress());
-			}
-			catch(NoSuchElementException ex) {
-				throw new NoSuchElementException("Challenge "+id+"doesn't exist.");
-			}finally {
-				return repo.save(e);
-			}
+		ChallengeEntity e = repo.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Challenge " + id + "doesn't exist."));
+
+		e.setTitle(c.getTitle());
+		e.setAchievement(c.getAchievement());
+		e.setCompleted(c.isCompleted());
+		e.setDescription(c.getDescription());
+		e.setStartdate(c.getStartdate());
+		e.setEnddate(c.getEnddate());
+		e.setProgress(c.getProgress());
+		e.setMaxProgress(c.getMaxProgress());
+
+		return repo.save(e);
 	}
-	
+
 	public String deleteChallenge(int id) {
-		String msg = "";
-		
-			if(repo.findById(id).get()!=null) {
-				if(repo.findById(id).get().isDeleted()){
-					msg = "Challenge #" + id + " is already deleted!";
-				}
-				else{
-				ChallengeEntity a = repo.findById(id).get();
-				a.setDeleted(true);
-				msg = "Challenge #" + id + "has been deleted";
-				repo.save(a);
-				}
-			}
-			else {msg = "Challenge #" + id + " doesn't exist";}
-			
-			return msg;
+		ChallengeEntity c = repo.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Challenge " + id + "does not exist"));
+
+		if (c.isDeleted()) {
+			return "Challenge #" + id + " is already deleted!";
+		} else {
+			c.setDeleted(true);
+			repo.save(c);
+			return "Challenge #" + id + "has been deleted";
+		}
 	}
 }
