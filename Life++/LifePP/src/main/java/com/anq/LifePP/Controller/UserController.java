@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Service.UserService;
 
@@ -22,38 +21,38 @@ import com.anq.LifePP.Service.UserService;
 @RequestMapping("/user")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
-	
-	@Autowired
-	UserService s;
-	
-	@GetMapping("/print")
-	public String hello(){
-		return "It works";
-	}
-	
-	@PostMapping("/insert")
-	public UserEntity insertUser(@RequestBody UserEntity e) {
-		return s.insertUser(e);
-	}
-	
+
+    @Autowired
+    UserService s;
+
+    @GetMapping("/print")
+    public String hello() {
+        return "It works";
+    }
+
+    @PostMapping("/insert")
+    public UserEntity insertUser(@RequestBody UserEntity e) {
+        return s.insertUser(e);
+    }
+
     @GetMapping("/get")
-    public List<UserEntity> getAllUsers(){
-    	return s.getallUser();
+    public List<UserEntity> getAllUsers() {
+        return s.getallUser();
     }
-    
+
     @PutMapping("/update")
-    public UserEntity updateStudent(@RequestParam int sid, @RequestBody UserEntity n){
-    	return s.updateUser(sid, n);
+    public UserEntity updateStudent(@RequestParam int sid, @RequestBody UserEntity n) {
+        return s.updateUser(sid, n);
     }
-    
+
     @DeleteMapping("/delete/{sid}")
     public String deleteStudent(@PathVariable int sid) {
-    	return s.deleteUser(sid);
+        return s.deleteUser(sid);
     }
-    
+
     @PostMapping("/join/{userId}/{courseId}")
     public String joinCourse(@PathVariable int userId, @PathVariable int courseId) {
         return s.joinCourse(userId, courseId);
     }
-    
+
 }
