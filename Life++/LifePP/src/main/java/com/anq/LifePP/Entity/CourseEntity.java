@@ -23,6 +23,8 @@ public class CourseEntity {
 	private String name;
 	@Column(name = "max")
 	private int max;
+	@Column(name = "description")
+	private String description;
 
 	@ManyToMany(mappedBy = "joinedCourses")
 	private List<UserEntity> enrolledUsers = new ArrayList<>();
