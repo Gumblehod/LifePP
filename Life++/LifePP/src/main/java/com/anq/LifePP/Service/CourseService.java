@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.anq.LifePP.Entity.CourseEntity;
+import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Repository.CourseRepository;
 
 @Service
@@ -45,4 +46,11 @@ public class CourseService {
 			return "Course #" + id + "has been deleted";
 		}
 	}
+
+	public List<UserEntity> getUsersEnrolledInCourse(int courseId) {
+        CourseEntity course = repo.findById(courseId)
+                .orElseThrow(() -> new NoSuchElementException("Course " + courseId + " doesn't exist."));
+
+        return course.getEnrolledUsers();
+    }
 }
