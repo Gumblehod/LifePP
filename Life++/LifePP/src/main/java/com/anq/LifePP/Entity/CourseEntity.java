@@ -5,7 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,18 @@ public class CourseEntity {
 	private int max;
 	@Column(name = "description")
 	private String description;
+
+	@ManyToOne
+	@JoinColumn(name = "coach_id")
+	private CoachEntity coach;
+
+	public CoachEntity getCoach() {
+		return coach;
+	}
+
+	public void setCoach(CoachEntity coach) {
+		this.coach = coach;
+	}
 
 	@ManyToMany(mappedBy = "joinedCourses")
 	private List<UserEntity> enrolledUsers = new ArrayList<>();
@@ -51,11 +65,13 @@ public class CourseEntity {
 	public CourseEntity() {
 	}
 
-	public CourseEntity(int courseID, String name, int max) {
+	public CourseEntity(int courseID, String name, int max, String description, CoachEntity coach) {
 		super();
 		this.courseID = courseID;
 		this.name = name;
 		this.max = max;
+		this.description = description;
+		this.coach = coach;
 	}
 
 	public int getCourseID() {

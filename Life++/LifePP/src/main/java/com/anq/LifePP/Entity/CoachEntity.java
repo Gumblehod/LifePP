@@ -5,6 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import java.util.List;
+
 import javax.persistence.Column;
 
 
@@ -15,6 +19,8 @@ public class CoachEntity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int coachid;
+	@Column(name="username")
+	private String username;
 	@Column(name="name")
 	private String name;
 	@Column(name="email")
@@ -22,6 +28,17 @@ public class CoachEntity {
 	@Column(name="deleted")
 	private boolean isDeleted = false;
 	
+	@OneToMany(mappedBy = "coach")
+    private List<CourseEntity> courses;
+
+    public List<CourseEntity> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<CourseEntity> courses) {
+        this.courses = courses;
+    }
+
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -32,11 +49,31 @@ public class CoachEntity {
 	
 	public CoachEntity() {}
 	
-	public CoachEntity(int coachID, String name, String email) {
+	public CoachEntity(int coachid, String username, String name, String email, boolean isDeleted,
+			List<CourseEntity> courses) {
 		super();
-		this.coachid = coachID;
+		this.coachid = coachid;
+		this.username = username;
 		this.name = name;
 		this.email = email;
+		this.isDeleted = isDeleted;
+		this.courses = courses;
+	}
+
+	public int getCoachid() {
+		return coachid;
+	}
+
+	public void setCoachid(int coachid) {
+		this.coachid = coachid;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public int getCoachID() {

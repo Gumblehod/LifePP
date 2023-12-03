@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.anq.LifePP.Entity.CoachEntity;
 import com.anq.LifePP.Repository.CoachRepository;
+import com.anq.LifePP.Repository.CourseRepository;
 
 @Service
 public class CoachService {
 
 	@Autowired
 	CoachRepository repo;
+    @Autowired
+    CourseRepository courseRepo;
 
 	public CoachEntity insertCoach(CoachEntity e) {
 		return repo.save(e);
@@ -30,6 +33,7 @@ public class CoachService {
 		if (c.getEmail() != null && c.getName() != null) {
 			e.setEmail(c.getEmail());
 			e.setName(c.getName());
+			e.setUsername(c.getUsername());
 		}
 
 		return repo.save(e);
@@ -47,4 +51,5 @@ public class CoachService {
 			return "Coach #" + id + "has been deleted";
 		}
 	}
+
 }
