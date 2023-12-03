@@ -51,5 +51,9 @@ public class CoachService {
 			return "Coach #" + id + "has been deleted";
 		}
 	}
+	
+    public CoachEntity getCoachByUsername(String username) {
+        return repo.findByUsername(username);
+    }
 
 }

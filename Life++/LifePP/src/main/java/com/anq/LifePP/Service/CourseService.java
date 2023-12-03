@@ -16,10 +16,11 @@ public class CourseService {
 
 	@Autowired
 	CourseRepository repo;
-
-	public CourseEntity insertCourse(CourseEntity e) {
-		return repo.save(e);
-	}
+	@Autowired
+    CoachService cs;
+	public CourseEntity insertCourse(CourseEntity course) {
+        return repo.save(course);
+    }
 
 	public List<CourseEntity> getallCourse() {
 		return repo.findAll();

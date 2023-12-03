@@ -34,9 +34,9 @@ public class CourseController {
 	}
 	
 	@PostMapping("/insert")
-	public CourseEntity insertCourse(@RequestBody CourseEntity e) {
-		return s.insertCourse(e);
-	}
+    public CourseEntity insertCourse(@RequestBody CourseEntity courseData) {
+        return s.insertCourse(courseData);
+    }
 	
     @GetMapping("/get")
     public List<CourseEntity> getAllCourses(){
