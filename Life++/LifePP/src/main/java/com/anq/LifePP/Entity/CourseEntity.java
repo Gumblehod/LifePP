@@ -1,9 +1,13 @@
 package com.anq.LifePP.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -28,9 +32,10 @@ public class CourseEntity {
 	@Column(name = "description")
 	private String description;
 
-	@ManyToOne
-	@JoinColumn(name = "coach_id")
-	private CoachEntity coach;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coach_id")
+    @JsonBackReference
+    private CoachEntity coach;
 
 	public CoachEntity getCoach() {
 		return coach;

@@ -4,11 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 
@@ -28,11 +33,21 @@ public class CoachEntity {
 	@Column(name="deleted")
 	private boolean isDeleted = false;
 	
-	@OneToMany(mappedBy = "coach")
-    private List<CourseEntity> courses;
+	@OneToMany(mappedBy = "coach", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Ensure to import the correct annotation
+    private List<CourseEntity> courses = new ArrayList<>();
 
     public List<CourseEntity> getCourses() {
         return courses;
+    }
+    
+	public void addCourseToCourses(CourseEntity course) {
+        if (this.courses == null) {
+            this.courses = new ArrayList<>();
+        }
+        if (!this.courses.contains(course)) {
+            this.courses.add(course);
+        }
     }
 
     public void setCourses(List<CourseEntity> courses) {

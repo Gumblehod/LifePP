@@ -18,7 +18,10 @@ public class CourseService {
 	CourseRepository repo;
 	@Autowired
     CoachService cs;
+
 	public CourseEntity insertCourse(CourseEntity course) {
+		CoachEntity c = course.getCoach();
+        c.addCourseToCourses(course);
         return repo.save(course);
     }
 
