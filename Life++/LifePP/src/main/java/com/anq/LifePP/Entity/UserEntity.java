@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -43,8 +46,9 @@ public class UserEntity {
 	private int type;
 
 	@ManyToMany
-	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
-	private List<CourseEntity> joinedCourses = new ArrayList<>();
+    @JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @JsonIgnoreProperties("enrolledUsers") // Avoid circular serialization
+    private List<CourseEntity> joinedCourses = new ArrayList<>();
 
 	@Column(name = "deleted")
 	private boolean isDeleted = false;

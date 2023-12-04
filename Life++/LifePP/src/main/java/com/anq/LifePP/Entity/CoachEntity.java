@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.Id;
@@ -34,7 +35,7 @@ public class CoachEntity {
 	private boolean isDeleted = false;
 	
 	@OneToMany(mappedBy = "coach", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Ensure to import the correct annotation
+    @JsonManagedReference // Manage serialization direction
     private List<CourseEntity> courses = new ArrayList<>();
 
     public List<CourseEntity> getCourses() {

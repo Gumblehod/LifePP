@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -46,7 +47,8 @@ public class CourseEntity {
 	}
 
 	@ManyToMany(mappedBy = "joinedCourses")
-	private List<UserEntity> enrolledUsers = new ArrayList<>();
+    @JsonIgnoreProperties("joinedCourses") // Avoid circular serialization
+    private List<UserEntity> enrolledUsers = new ArrayList<>();
 
 	public List<UserEntity> getEnrolledUsers() {
 		return enrolledUsers;
