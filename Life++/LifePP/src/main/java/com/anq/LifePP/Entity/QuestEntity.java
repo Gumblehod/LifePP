@@ -7,10 +7,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 
 @Entity
@@ -40,6 +47,31 @@ public class QuestEntity {
 	@JoinColumn(name = "course_id")
 	@JsonBackReference
 	private CourseEntity course;
+
+	@ManyToMany(mappedBy = "completedQuests")
+	@JsonIgnoreProperties("completedQuests")
+	private List<UserEntity> completedByUsers = new ArrayList<>();
+
+	public List<UserEntity> getCompletedByUsers() {
+		return completedByUsers;
+	}
+
+	@ManyToMany
+	@JoinTable(name = "user_ongoing_quest", joinColumns = @JoinColumn(name = "quest_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JsonIgnoreProperties("ongoingQuests")
+	private List<UserEntity> ongoingUsers = new ArrayList<>();
+
+	public List<UserEntity> getOngoingUsers() {
+		return ongoingUsers;
+	}
+
+	public void setOngoingUsers(List<UserEntity> ongoingUsers) {
+		this.ongoingUsers = ongoingUsers;
+	}
+
+	public void setCompletedByUsers(List<UserEntity> completedByUsers) {
+		this.completedByUsers = completedByUsers;
+	}
 
 	public AchievementEntity getAchievement() {
 		return achievement;

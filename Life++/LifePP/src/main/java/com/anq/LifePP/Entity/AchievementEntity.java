@@ -23,7 +23,7 @@ public class AchievementEntity {
 	private boolean isDeleted = false;
 	@Column(name="achievement_point")
     private int point;
-
+	
 	public boolean isDeleted() {
 		return isDeleted;
 	}

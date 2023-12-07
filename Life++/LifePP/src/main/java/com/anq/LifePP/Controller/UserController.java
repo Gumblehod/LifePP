@@ -61,4 +61,12 @@ public class UserController {
         return s.forgotPassword(usernameOrEmail, newPassword);
     }
 
+    @PostMapping("/{userId}/quests/{questId}/attempt")
+    public String attemptQuest(
+            @PathVariable int userId,
+            @PathVariable int questId,
+            @RequestParam(required = false) boolean isCompleted
+    ) {
+        return s.attemptQuest(userId, questId, isCompleted);
+    }
 }

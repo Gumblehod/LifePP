@@ -6,9 +6,12 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.CourseEntity;
+import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Repository.CourseRepository;
+import com.anq.LifePP.Repository.QuestRepository;
 import com.anq.LifePP.Repository.UserRepository;
 
 @Service
@@ -18,7 +21,8 @@ public class UserService {
 	UserRepository repo;
 	@Autowired
 	CourseRepository crepo;
-
+	@Autowired
+	QuestRepository q;
 	public UserEntity insertUser(UserEntity e) {
 		return repo.save(e);
 	}
@@ -112,4 +116,50 @@ public class UserService {
         return repo.save(user);
     }
 
+	public String attemptQuest(int userId, int questId, boolean isCompleted) {
+        UserEntity user = repo.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+		QuestEntity quest = q.findById(questId).get();
+
+        if (quest != null) {
+            if (!isCompleted) {
+                // Attempt ongoing quest
+                if (!user.getOngoingQuests().contains(quest)) {
+                    user.getOngoingQuests().add(quest);
+                    quest.getOngoingUsers().add(user);
+
+                    repo.save(user);
+                    // Save quest
+                    // qs.insertQuest(quest); // Uncomment if necessary
+
+                    return "User #" + userId + " has started Quest #" + questId;
+                } else {
+                    return "User #" + userId + " is already attempting Quest #" + questId;
+                }
+            } else {
+                // Complete ongoing quest
+                if (user.getOngoingQuests().contains(quest)) {
+                    user.getOngoingQuests().remove(quest);
+                    quest.getOngoingUsers().remove(user);
+                    
+                    user.getCompletedQuests().add(quest);
+                    quest.getCompletedByUsers().add(user);
+
+                    // Update achievement points
+                    AchievementEntity a = quest.getAchievement();
+					int points = a.getPoint();
+                    user.setAchievementPoint(user.getAchievementPoint() + points);
+
+                    repo.save(user);
+
+                    return "User #" + userId + " has completed Quest #" + questId + ". Points added: " + points;
+                } else {
+                    return "User #" + userId + " is not attempting Quest #" + questId;
+                }
+            }
+        } else {
+            return "Quest #" + questId + " not found";
+        }
+    }
 }

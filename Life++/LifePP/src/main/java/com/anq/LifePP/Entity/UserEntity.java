@@ -60,8 +60,33 @@ public class UserEntity {
 
 	@ManyToMany
 	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
-	@JsonIgnoreProperties("enrolledUsers") 
+	@JsonIgnoreProperties("enrolledUsers")
 	private List<CourseEntity> joinedCourses = new ArrayList<>();
+	
+	@ManyToMany(mappedBy = "ongoingUsers")
+	@JsonIgnoreProperties("ongoingUsers")
+	private List<QuestEntity> ongoingQuests = new ArrayList<>();
+
+	public List<QuestEntity> getOngoingQuests() {
+		return ongoingQuests;
+	}
+
+	public void setOngoingQuests(List<QuestEntity> ongoingQuests) {
+		this.ongoingQuests = ongoingQuests;
+	}
+
+	@ManyToMany
+	@JoinTable(name = "user_completed_quest", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "quest_id"))
+	@JsonIgnoreProperties("completedByUsers")
+	private List<QuestEntity> completedQuests = new ArrayList<>();
+
+	public List<QuestEntity> getCompletedQuests() {
+		return completedQuests;
+	}
+
+	public void setCompletedQuests(List<QuestEntity> completedQuests) {
+		this.completedQuests = completedQuests;
+	}
 
 	@Column(name = "deleted")
 	private boolean isDeleted = false;

@@ -1,10 +1,16 @@
 package com.anq.LifePP.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 
 
@@ -29,11 +35,21 @@ public class ChallengeEntity {
     private int maxProgress;
 	@Column(name="completion")
     private boolean isCompleted;
-	@Column(name="achievement")
-    private int achievement;
 	@Column(name="deleted")
 	private boolean isDeleted = false;
-	
+
+	@JsonIgnoreProperties("challenges")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "achievement_id")
+    private AchievementEntity achievement;
+
+    public AchievementEntity getAchievement() {
+        return achievement;
+    }
+
+    public void setAchievement(AchievementEntity achievement) {
+        this.achievement = achievement;
+    }
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -45,7 +61,7 @@ public class ChallengeEntity {
 	public ChallengeEntity() {}
 	
 	public ChallengeEntity(int cid, String title, String startdate, String enddate, String description, int progress,
-			int maxProgress, boolean isCompleted, int achievement) {
+			int maxProgress, boolean isCompleted) {
 		super();
 		this.cid = cid;
 		this.title = title;
@@ -55,7 +71,6 @@ public class ChallengeEntity {
 		this.progress = progress;
 		this.maxProgress = maxProgress;
 		this.isCompleted = isCompleted;
-		this.achievement = achievement;
 	}
 
 	public int getCid() {
@@ -120,14 +135,6 @@ public class ChallengeEntity {
 
 	public void setCompleted(boolean isCompleted) {
 		this.isCompleted = isCompleted;
-	}
-
-	public int getAchievement() {
-		return achievement;
-	}
-
-	public void setAchievement(int achievement) {
-		this.achievement = achievement;
 	}
 	
 }
