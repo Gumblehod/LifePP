@@ -52,7 +52,7 @@ public class CourseEntity {
 	}
 
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnoreProperties({ "course", "quests.ongoingUsers" }) // Ignore course and ongoingUsers attributes
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "course" })
 	private List<QuestEntity> quests = new ArrayList<>();
 
 	public List<QuestEntity> getQuests() {
@@ -65,7 +65,8 @@ public class CourseEntity {
 
 	@ManyToMany
 	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	@JsonIgnoreProperties({ "enrolledUsers", "quests" }) // Updated to include "quests"
+	@JsonIgnoreProperties({ "enrolledUsers", "quests", "joinedCourses", "ongoingQuests", "ongoingUsers",
+			"completedQuests" }) // Updated to include "quests"
 	private List<UserEntity> enrolledUsers = new ArrayList<>();
 
 	public List<UserEntity> getEnrolledUsers() {

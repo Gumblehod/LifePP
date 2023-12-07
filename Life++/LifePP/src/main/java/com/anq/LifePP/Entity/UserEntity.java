@@ -60,12 +60,12 @@ public class UserEntity {
 
 	@ManyToMany
 	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
-	@JsonIgnoreProperties("enrolledUsers") // Ignore enrolledUsers attribute in CourseEntity
+	@JsonIgnoreProperties({"enrolledUsers","quests"}) // Ignore enrolledUsers attribute in CourseEntity
 	private List<CourseEntity> joinedCourses = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "user_quest", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "quest_id"))
-	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests" }) // Updated to include "quests"
+	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests","enrolledUsers" }) // Updated to include "quests"
 	private List<QuestEntity> ongoingQuests = new ArrayList<>();
 
 	public List<QuestEntity> getOngoingQuests() {

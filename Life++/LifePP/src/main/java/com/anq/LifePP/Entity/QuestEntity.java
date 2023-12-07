@@ -43,15 +43,15 @@ public class QuestEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id")
-	@JsonIgnoreProperties("quests")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "quests", "enrolledUsers" })
 	private CourseEntity course;
 
 	@ManyToMany(mappedBy = "ongoingQuests")
-	@JsonIgnoreProperties({ "joinedCourses", "completedQuests", "course" }) // Updated to include "course"
+	@JsonIgnoreProperties({ "joinedCourses", "completedQuests", "course", "quests", "ongoingQuests"})
 	private List<UserEntity> ongoingUsers = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "completedQuests")
-	@JsonIgnoreProperties({ "joinedCourses", "ongoingQuests", "course" }) // Updated to include "course"
+	@JsonIgnoreProperties({ "joinedCourses", "ongoingQuests", "course", "quests" })
 	private List<UserEntity> completedByUsers = new ArrayList<>();
 
 	public List<UserEntity> getCompletedByUsers() {
