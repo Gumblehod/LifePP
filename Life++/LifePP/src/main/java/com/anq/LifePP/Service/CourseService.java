@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.CoachEntity;
 import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.QuestEntity;
@@ -22,8 +21,6 @@ public class CourseService {
     CoachService cs;
 	@Autowired
     private QuestService qs;
-	@Autowired
-    private UserService u;
 
 	public CourseEntity insertCourse(CourseEntity course) {
 		CoachEntity c = course.getCoach();
