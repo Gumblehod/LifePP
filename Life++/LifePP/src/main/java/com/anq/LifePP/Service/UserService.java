@@ -23,6 +23,7 @@ public class UserService {
 	CourseRepository crepo;
 	@Autowired
 	QuestRepository q;
+	
 	public UserEntity insertUser(UserEntity e) {
 		return repo.save(e);
 	}
@@ -124,21 +125,17 @@ public class UserService {
 
         if (quest != null) {
             if (!isCompleted) {
-                // Attempt ongoing quest
                 if (!user.getOngoingQuests().contains(quest)) {
                     user.getOngoingQuests().add(quest);
                     quest.getOngoingUsers().add(user);
 
                     repo.save(user);
-                    // Save quest
-                    // qs.insertQuest(quest); // Uncomment if necessary
 
                     return "User #" + userId + " has started Quest #" + questId;
                 } else {
                     return "User #" + userId + " is already attempting Quest #" + questId;
                 }
             } else {
-                // Complete ongoing quest
                 if (user.getOngoingQuests().contains(quest)) {
                     user.getOngoingQuests().remove(quest);
                     quest.getOngoingUsers().remove(user);
@@ -146,7 +143,6 @@ public class UserService {
                     user.getCompletedQuests().add(quest);
                     quest.getCompletedByUsers().add(user);
 
-                    // Update achievement points
                     AchievementEntity a = quest.getAchievement();
 					int points = a.getPoint();
                     user.setAchievementPoint(user.getAchievementPoint() + points);

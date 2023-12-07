@@ -1,6 +1,7 @@
 package com.anq.LifePP.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -56,7 +57,8 @@ public class UserController {
     }
 
     @PostMapping("/forgotPassword")
-    public UserEntity forgotPassword(@RequestParam String usernameOrEmail, @RequestParam String newPassword) {
+    public UserEntity forgotPassword(@RequestParam("usernameOrEmail") String usernameOrEmail,
+            @RequestParam("newPassword") String newPassword) {
         return s.forgotPassword(usernameOrEmail, newPassword);
     }
 
@@ -64,8 +66,7 @@ public class UserController {
     public String attemptQuest(
             @PathVariable int userId,
             @PathVariable int questId,
-            @RequestParam(required = false) boolean isCompleted
-    ) {
+            @RequestParam(required = false) boolean isCompleted) {
         return s.attemptQuest(userId, questId, isCompleted);
     }
 }
