@@ -3,6 +3,7 @@ package com.anq.LifePP.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +54,11 @@ public class UserController {
     @PostMapping("/join/{userId}/{courseId}")
     public String joinCourse(@PathVariable int userId, @PathVariable int courseId) {
         return s.joinCourse(userId, courseId);
+    }
+
+    @PostMapping("/forgotPassword")
+    public UserEntity forgotPassword(@RequestParam String usernameOrEmail, @RequestParam String newPassword) {
+        return s.forgotPassword(usernameOrEmail, newPassword);
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.anq.LifePP.Entity.CoachEntity;
 import com.anq.LifePP.Entity.CourseEntity;
+import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Repository.CourseRepository;
 
@@ -18,6 +19,8 @@ public class CourseService {
 	CourseRepository repo;
 	@Autowired
     CoachService cs;
+	@Autowired
+    private QuestService qs;
 
 	public CourseEntity insertCourse(CourseEntity course) {
 		CoachEntity c = course.getCoach();
@@ -58,4 +61,23 @@ public class CourseService {
 
         return course.getEnrolledUsers();
     }
+
+	public List<QuestEntity> getQuestsInCourse(int courseId) {
+        CourseEntity course = repo.findById(courseId)
+                .orElseThrow(() -> new NoSuchElementException("Course " + courseId + " doesn't exist."));
+
+        return course.getQuests();
+    }
+
+	public CourseEntity addQuestToCourse(int courseId, QuestEntity quest) {
+        CourseEntity course = repo.findById(courseId)
+                .orElseThrow(() -> new NoSuchElementException("Course " + courseId + " doesn't exist."));
+
+        quest.setCourse(course);
+        course.getQuests().add(quest);
+		qs.insertQuest(quest);
+
+        return repo.save(course);
+    }
+
 }

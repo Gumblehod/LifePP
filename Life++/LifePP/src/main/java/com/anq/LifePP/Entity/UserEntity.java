@@ -44,11 +44,24 @@ public class UserEntity {
 	private String password;
 	@Column(name = "type")
 	private int type;
+	@Column(name = "achievement_point")
+	private int achievementPoint = 0;
+	@ManyToMany
+	@JoinTable(name = "user_reward", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "reward_id"))
+	private List<RewardEntity> items = new ArrayList<>();
+
+	public List<RewardEntity> getItems() {
+		return items;
+	}
+
+	public void setItems(List<RewardEntity> items) {
+		this.items = items;
+	}
 
 	@ManyToMany
-    @JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
-    @JsonIgnoreProperties("enrolledUsers") // Avoid circular serialization
-    private List<CourseEntity> joinedCourses = new ArrayList<>();
+	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	@JsonIgnoreProperties("enrolledUsers") 
+	private List<CourseEntity> joinedCourses = new ArrayList<>();
 
 	@Column(name = "deleted")
 	private boolean isDeleted = false;
@@ -166,5 +179,13 @@ public class UserEntity {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public int getAchievementPoint() {
+		return achievementPoint;
+	}
+
+	public void setAchievementPoint(int achievementPoint) {
+		this.achievementPoint = achievementPoint;
 	}
 }

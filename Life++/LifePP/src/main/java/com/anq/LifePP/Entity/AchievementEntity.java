@@ -21,7 +21,9 @@ public class AchievementEntity {
 	private String description;
 	@Column(name="deleted")
 	private boolean isDeleted = false;
-	
+	@Column(name="achievement_point")
+    private int point;
+
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -62,4 +64,12 @@ public class AchievementEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}	
+
+	public int getPoint(){
+		return point;
+	}
+
+	public void setPoint(int p){
+		this.point = p;
+	}
 }

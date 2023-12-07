@@ -1,35 +1,62 @@
 package com.anq.LifePP.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 
-
 @Entity
-@Table(name="tblQuest")
+@Table(name = "tblQuest")
 public class QuestEntity {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int qid;
-	@Column(name="title")
-    private String title;
-	@Column(name="description")
-    private String description;
-	@Column(name="progress")
-    private int progress;
-	@Column(name="maxprogress")
-    private int maxProgress;
-	@Column(name="completion")
-    private boolean isCompleted;
-	@Column(name="achievement")
-    private int achievement;
-	@Column(name="deleted")
+	@Column(name = "title")
+	private String title;
+	@Column(name = "description")
+	private String description;
+	@Column(name = "progress")
+	private int progress;
+	@Column(name = "maxprogress")
+	private int maxProgress;
+	@Column(name = "completion")
+	private boolean isCompleted;
+	@Column(name = "deleted")
 	private boolean isDeleted = false;
-	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "achievement_id")
+	private AchievementEntity achievement;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "course_id")
+	@JsonBackReference
+	private CourseEntity course;
+
+	public AchievementEntity getAchievement() {
+		return achievement;
+	}
+
+	public void setAchievement(AchievementEntity achievement) {
+		this.achievement = achievement;
+	}
+
+	public CourseEntity getCourse() {
+		return course;
+	}
+
+	public void setCourse(CourseEntity course) {
+		this.course = course;
+	}
+
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -37,11 +64,11 @@ public class QuestEntity {
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
-	public QuestEntity() {}
 
-	public QuestEntity(int qid, String title, String description, int progress, int maxProgress, boolean isCompleted,
-			int achievement) {
+	public QuestEntity() {
+	}
+
+	public QuestEntity(int qid, String title, String description, int progress, int maxProgress, boolean isCompleted) {
 		super();
 		this.qid = qid;
 		this.title = title;
@@ -49,7 +76,6 @@ public class QuestEntity {
 		this.progress = progress;
 		this.maxProgress = maxProgress;
 		this.isCompleted = isCompleted;
-		this.achievement = achievement;
 	}
 
 	public int getQid() {
@@ -98,13 +124,5 @@ public class QuestEntity {
 
 	public void setCompleted(boolean isCompleted) {
 		this.isCompleted = isCompleted;
-	}
-
-	public int getAchievement() {
-		return achievement;
-	}
-
-	public void setAchievement(int achievement) {
-		this.achievement = achievement;
 	}
 }

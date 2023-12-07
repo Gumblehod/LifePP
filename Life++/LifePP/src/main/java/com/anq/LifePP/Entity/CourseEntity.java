@@ -13,10 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 @Entity
@@ -32,7 +34,9 @@ public class CourseEntity {
 	private int max;
 	@Column(name = "description")
 	private String description;
-
+	@Column(name = "participants")
+	private int participants = 0;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coach_id")
     @JsonBackReference
@@ -45,7 +49,17 @@ public class CourseEntity {
 	public void setCoach(CoachEntity coach) {
 		this.coach = coach;
 	}
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("course")
+    private List<QuestEntity> quests = new ArrayList<>();
+	public List<QuestEntity> getQuests() {
+        return quests;
+    }
 
+    public void setQuests(List<QuestEntity> quests) {
+        this.quests = quests;
+    }
+	
 	@ManyToMany(mappedBy = "joinedCourses")
     @JsonIgnoreProperties("joinedCourses") // Avoid circular serialization
     private List<UserEntity> enrolledUsers = new ArrayList<>();
@@ -103,5 +117,21 @@ public class CourseEntity {
 
 	public void setMax(int max) {
 		this.max = max;
+	}
+
+	public int getParticipants(){
+		return participants;
+	}
+
+	public void setParticipants(int p){
+		this.participants = p;
+	}
+
+	public String getDescription(){
+		return this.description;
+	}
+
+	public void setDescription(String d){
+		this.description = d;
 	}
 }

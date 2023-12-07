@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anq.LifePP.Entity.CourseEntity;
+import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Service.CourseService;
+import com.anq.LifePP.Service.QuestService;
 
 @RestController
 @RequestMapping("/course")
@@ -27,7 +30,9 @@ public class CourseController {
 	
 	@Autowired
 	CourseService s;
-	
+	@Autowired
+    private QuestService questService;
+
 	@GetMapping("/print")
 	public String hello(){
 		return "It works";
@@ -61,4 +66,19 @@ public class CourseController {
             return Collections.emptyList();
         }
     }
+    @PostMapping("/{courseId}/addquest")
+    public CourseEntity addQuestToCourse(@PathVariable int courseId, @RequestBody QuestEntity quest) {
+        CourseEntity updatedCourse = s.addQuestToCourse(courseId, quest);
+
+        // Save the quest via QuestService
+        questService.insertQuest(quest);
+
+        return updatedCourse;
+    }
+
+    @GetMapping("/{courseId}/quests")
+    public List<QuestEntity> getQuestsInCourse(@PathVariable int courseId) {
+        return s.getQuestsInCourse(courseId);
+    }
+
 }
