@@ -45,21 +45,20 @@ public class QuestEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id")
-	@JsonBackReference
+	@JsonIgnoreProperties("quests")
 	private CourseEntity course;
 
+	@ManyToMany(mappedBy = "ongoingQuests")
+	@JsonIgnoreProperties({ "joinedCourses", "completedQuests", "course" }) // Updated to include "course"
+	private List<UserEntity> ongoingUsers = new ArrayList<>();
+
 	@ManyToMany(mappedBy = "completedQuests")
-	@JsonIgnoreProperties("completedQuests")
+	@JsonIgnoreProperties({ "joinedCourses", "ongoingQuests", "course" }) // Updated to include "course"
 	private List<UserEntity> completedByUsers = new ArrayList<>();
 
 	public List<UserEntity> getCompletedByUsers() {
 		return completedByUsers;
 	}
-
-	@ManyToMany
-	@JoinTable(name = "user_ongoing_quest", joinColumns = @JoinColumn(name = "quest_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	@JsonIgnoreProperties("ongoingQuests")
-	private List<UserEntity> ongoingUsers = new ArrayList<>();
 
 	public List<UserEntity> getOngoingUsers() {
 		return ongoingUsers;

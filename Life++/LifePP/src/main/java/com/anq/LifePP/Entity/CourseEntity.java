@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -36,11 +37,11 @@ public class CourseEntity {
 	private String description;
 	@Column(name = "participants")
 	private int participants = 0;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coach_id")
-    @JsonBackReference
-    private CoachEntity coach;
+	@JoinColumn(name = "coach_id")
+	@JsonBackReference
+	private CoachEntity coach;
 
 	public CoachEntity getCoach() {
 		return coach;
@@ -49,20 +50,23 @@ public class CourseEntity {
 	public void setCoach(CoachEntity coach) {
 		this.coach = coach;
 	}
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("course")
-    private List<QuestEntity> quests = new ArrayList<>();
-	public List<QuestEntity> getQuests() {
-        return quests;
-    }
 
-    public void setQuests(List<QuestEntity> quests) {
-        this.quests = quests;
-    }
-	
-	@ManyToMany(mappedBy = "joinedCourses")
-    @JsonIgnoreProperties("joinedCourses") // Avoid circular serialization
-    private List<UserEntity> enrolledUsers = new ArrayList<>();
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnoreProperties({ "course", "quests.ongoingUsers" }) // Ignore course and ongoingUsers attributes
+	private List<QuestEntity> quests = new ArrayList<>();
+
+	public List<QuestEntity> getQuests() {
+		return quests;
+	}
+
+	public void setQuests(List<QuestEntity> quests) {
+		this.quests = quests;
+	}
+
+	@ManyToMany
+	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JsonIgnoreProperties({ "enrolledUsers", "quests" }) // Updated to include "quests"
+	private List<UserEntity> enrolledUsers = new ArrayList<>();
 
 	public List<UserEntity> getEnrolledUsers() {
 		return enrolledUsers;
@@ -119,19 +123,19 @@ public class CourseEntity {
 		this.max = max;
 	}
 
-	public int getParticipants(){
+	public int getParticipants() {
 		return participants;
 	}
 
-	public void setParticipants(int p){
+	public void setParticipants(int p) {
 		this.participants = p;
 	}
 
-	public String getDescription(){
+	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(String d){
+	public void setDescription(String d) {
 		this.description = d;
 	}
 }

@@ -35,7 +35,7 @@ public class CoachEntity {
 	private boolean isDeleted = false;
 	
 	@OneToMany(mappedBy = "coach", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Manage serialization direction
+    @JsonManagedReference
     private List<CourseEntity> courses = new ArrayList<>();
 
     public List<CourseEntity> getCourses() {
