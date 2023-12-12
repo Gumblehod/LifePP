@@ -1,10 +1,13 @@
 package com.anq.LifePP.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 
@@ -21,6 +24,17 @@ public class ShopEntity{
 	private String description;
 	public ShopEntity() {}
 	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "shop", fetch = FetchType.LAZY)
+    private RewardEntity reward;
+	
+	public RewardEntity getReward() {
+        return reward;
+    }
+
+    public void setReward(RewardEntity reward) {
+        this.reward = reward;
+    }
+
 	public ShopEntity(int sid, String name, String description) {
 		super();
 		this.sid = sid;

@@ -1,10 +1,13 @@
 package com.anq.LifePP.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Column;
 
 
@@ -22,6 +25,10 @@ public class RewardEntity{
 	@Column(name="deleted")
 	private boolean isDeleted = false;
 	
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id")
+    private ShopEntity shop;
+
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -29,7 +36,13 @@ public class RewardEntity{
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-	
+	 public ShopEntity getShop() {
+        return shop;
+    }
+
+    public void setShop(ShopEntity shop) {
+        this.shop = shop;
+    }
 	public RewardEntity() {}
 	
 	public RewardEntity(int rid, String name, int quantity) {

@@ -26,18 +26,23 @@ public class CoachService {
 		return repo.findAll();
 	}
 
-	public CoachEntity updateCoach(int id, CoachEntity c) {
-		CoachEntity e = repo.findById(id)
-				.orElseThrow(() -> new NoSuchElementException("Coach " + id + "doesn't exist."));
-
-		if (c.getEmail() != null && c.getName() != null) {
-			e.setEmail(c.getEmail());
-			e.setName(c.getName());
-			e.setUsername(c.getUsername());
+	public CoachEntity updateCoach(int id, CoachEntity updatedCoach) {
+		CoachEntity existingCoach = repo.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Coach " + id + " doesn't exist."));
+	
+		if (updatedCoach.getEmail() != null && !updatedCoach.getEmail().isEmpty()) {
+			existingCoach.setEmail(updatedCoach.getEmail());
 		}
-
-		return repo.save(e);
+		if (updatedCoach.getName() != null && !updatedCoach.getName().isEmpty()) {
+			existingCoach.setName(updatedCoach.getName());
+		}
+		if (updatedCoach.getUsername() != null && !updatedCoach.getUsername().isEmpty()) {
+			existingCoach.setUsername(updatedCoach.getUsername());
+		}
+	
+		return repo.save(existingCoach);
 	}
+	
 
 	public String deleteCoach(int id) {
 		CoachEntity c = repo.findById(id)
