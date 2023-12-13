@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.anq.LifePP.Entity.CoachEntity;
 import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.QuestEntity;
-import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Repository.CourseRepository;
 
 @Service
