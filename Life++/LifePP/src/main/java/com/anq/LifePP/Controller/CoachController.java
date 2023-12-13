@@ -41,12 +41,12 @@ public class CoachController {
     }
     
     @PutMapping("/update")
-    public CoachEntity updateStudent(@RequestParam int sid, @RequestBody CoachEntity n){
+    public CoachEntity updateCoach(@RequestParam int sid, @RequestBody CoachEntity n){
     	return s.updateCoach(sid, n);
     }
     
     @DeleteMapping("/delete/{sid}")
-    public String deleteStudent(@PathVariable int sid) {
+    public String deleteCoach(@PathVariable int sid) {
     	return s.deleteCoach(sid);
     }
 }

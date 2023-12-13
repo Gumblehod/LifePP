@@ -1,7 +1,6 @@
 package com.anq.LifePP.Controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,12 +41,12 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public UserEntity updateStudent(@RequestParam int sid, @RequestBody UserEntity n) {
+    public UserEntity updateUser(@RequestParam int sid, @RequestBody UserEntity n) {
         return s.updateUser(sid, n);
     }
 
     @DeleteMapping("/delete/{sid}")
-    public String deleteStudent(@PathVariable int sid) {
+    public String updateUser(@PathVariable int sid) {
         return s.deleteUser(sid);
     }
 
