@@ -23,17 +23,6 @@ public class ShopEntity{
 	@Column(name="description")
 	private String description;
 	public ShopEntity() {}
-	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "shop", fetch = FetchType.LAZY)
-    private RewardEntity reward;
-	
-	public RewardEntity getReward() {
-        return reward;
-    }
-
-    public void setReward(RewardEntity reward) {
-        this.reward = reward;
-    }
 
 	public ShopEntity(int sid, String name, String description) {
 		super();
