@@ -50,6 +50,19 @@ public class UserEntity {
 	@JoinTable(name = "user_reward", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "reward_id"))
 	private List<RewardEntity> items = new ArrayList<>();
 
+	@ManyToMany
+    @JoinTable(name = "user_achievement", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "achievement_id"))
+	@JsonIgnoreProperties({ "hibernateLazyInitializer"})
+    private List<AchievementEntity> achievements = new ArrayList<>();
+
+    public List<AchievementEntity> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(List<AchievementEntity> achievements) {
+        this.achievements = achievements;
+    }
+
 	public List<RewardEntity> getItems() {
 		return items;
 	}
@@ -65,7 +78,7 @@ public class UserEntity {
 
 	@ManyToMany
 	@JoinTable(name = "user_quest", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "quest_id"))
-	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests","enrolledUsers" }) // Updated to include "quests"
+	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests","enrolledUsers", "course"}) // Updated to include "quests"
 	private List<QuestEntity> ongoingQuests = new ArrayList<>();
 
 	public List<QuestEntity> getOngoingQuests() {
@@ -78,7 +91,7 @@ public class UserEntity {
 
 	@ManyToMany
 	@JoinTable(name = "user_completed_quest", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "quest_id"))
-	@JsonIgnoreProperties({ "enrolledUsers", "ongoingUsers" }) // Ignore these attributes in QuestEntity
+	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests","enrolledUsers", "course" }) // Ignore these attributes in QuestEntity
 	private List<QuestEntity> completedQuests = new ArrayList<>();
 
 	public List<QuestEntity> getCompletedQuests() {

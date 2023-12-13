@@ -39,6 +39,7 @@ public class QuestEntity {
 	private boolean isDeleted = false;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "achievement_id")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "quests" })
 	private AchievementEntity achievement;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -47,11 +48,11 @@ public class QuestEntity {
 	private CourseEntity course;
 
 	@ManyToMany(mappedBy = "ongoingQuests")
-	@JsonIgnoreProperties({ "joinedCourses", "completedQuests", "course", "quests", "ongoingQuests"})
+	@JsonIgnoreProperties({ "joinedCourses", "completedQuests", "course", "quests", "ongoingQuests","items"})
 	private List<UserEntity> ongoingUsers = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "completedQuests")
-	@JsonIgnoreProperties({ "joinedCourses", "ongoingQuests", "course", "quests" })
+	@JsonIgnoreProperties({ "joinedCourses", "completedQuests", "course", "quests", "ongoingQuests","items"})
 	private List<UserEntity> completedByUsers = new ArrayList<>();
 
 	public List<UserEntity> getCompletedByUsers() {

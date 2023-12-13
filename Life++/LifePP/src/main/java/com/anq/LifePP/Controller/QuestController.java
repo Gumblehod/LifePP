@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Service.QuestService;
 
@@ -50,4 +51,8 @@ public class QuestController {
 		return s.deleteQuest(sid);
 	}
 	
+	@PostMapping("{qid}/addachievement/{aid}")
+	public QuestEntity addAchievement(@PathVariable int qid, @PathVariable int aid){
+		return s.addAchievement(qid,aid);
+	}
 }

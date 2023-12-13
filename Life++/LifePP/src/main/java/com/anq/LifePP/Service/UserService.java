@@ -153,7 +153,8 @@ public class UserService {
                     AchievementEntity a = quest.getAchievement();
 					int points = a.getPoint();
                     user.setAchievementPoint(user.getAchievementPoint() + points);
-
+					user.getAchievements().add(a);
+					
                     repo.save(user);
 
                     return "User #" + userId + " has completed Quest #" + questId + ". Points added: " + points;

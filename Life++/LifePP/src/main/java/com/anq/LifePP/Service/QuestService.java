@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Repository.AchievementRepository;
 import com.anq.LifePP.Repository.QuestRepository;
@@ -17,7 +18,7 @@ public class QuestService {
 	QuestRepository repo;
 	@Autowired
 	AchievementRepository a;
-
+	
 	public QuestEntity insertQuest(QuestEntity e) {
 		return repo.save(e);
 	}
@@ -53,4 +54,15 @@ public class QuestService {
 		}
 	}
 
+	public QuestEntity addAchievement(int qid,int aid){
+		AchievementEntity ar = a.findById(aid)
+				.orElseThrow(() -> new NoSuchElementException("Achievement " + aid + "does not exist"));
+		QuestEntity c = repo.findById(qid)
+				.orElseThrow(() -> new NoSuchElementException("Quest " + qid + "does not exist"));
+
+
+		c.setAchievement(ar);
+		repo.save(c);
+		return c;
+	}
 }
