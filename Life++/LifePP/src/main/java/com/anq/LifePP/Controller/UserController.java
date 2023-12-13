@@ -73,4 +73,9 @@ public class UserController {
     public String leaveCourse(@PathVariable int userId, @PathVariable int courseId) {
         return s.leaveCourse(userId, courseId);
     }
+
+    @PostMapping("/buy/{userId}/{rewardId}")
+    public String buyReward(@PathVariable int userId, @PathVariable int rewardId) {
+        return s.buyReward(userId, rewardId);
+    }
 }

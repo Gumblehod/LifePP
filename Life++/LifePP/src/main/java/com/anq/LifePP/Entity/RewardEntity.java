@@ -17,7 +17,7 @@ public class RewardEntity{
 	private int rid;
 	@Column(name="name")
 	private String name;
-	@Column(name="quantity")
+	@Column(name="points")
 	private int points;
 	@Column(name="deleted")
 	private boolean isDeleted = false;
@@ -33,11 +33,11 @@ public class RewardEntity{
 
 	public RewardEntity() {}
 	
-	public RewardEntity(int rid, String name, int quantity) {
+	public RewardEntity(int rid, String name, int points) {
 		super();
 		this.rid = rid;
 		this.name = name;
-		this.points = quantity;
+		this.points = points;
 	}
 	public int getRid() {
 		return rid;
@@ -51,11 +51,11 @@ public class RewardEntity{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getQuantity() {
+	public int getPoints() {
 		return points;
 	}
-	public void setQuantity(int quantity) {
-		this.points = quantity;
+	public void setPoints(int points) {
+		this.points = points;
 	}
 	
 	

@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.QuestEntity;
+import com.anq.LifePP.Entity.RewardEntity;
 import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Repository.CourseRepository;
 import com.anq.LifePP.Repository.QuestRepository;
+import com.anq.LifePP.Repository.RewardRepository;
 import com.anq.LifePP.Repository.UserRepository;
 
 @Service
@@ -23,7 +25,9 @@ public class UserService {
 	CourseRepository crepo;
 	@Autowired
 	QuestRepository q;
-	
+	@Autowired
+	RewardRepository r;
+
 	public UserEntity insertUser(UserEntity e) {
 		return repo.save(e);
 	}
@@ -63,7 +67,10 @@ public class UserService {
 		if (updatedUser.getUsername() != null && !updatedUser.getUsername().isEmpty()) {
 			existingUser.setUsername(updatedUser.getUsername());
 		}
-
+		if (updatedUser.getAchievementPoint() != 0) {
+			existingUser.setAchievementPoint(updatedUser.getAchievementPoint());
+		}
+		
 		return repo.save(existingUser);
 	}
 
@@ -178,6 +185,27 @@ public class UserService {
 					+ (currentParticipants - 1) + "/" + course.getMax();
 		} else {
 			return "User #" + userId + " is not enrolled in Course #" + courseId;
+		}
+	}
+	public String buyReward(int userId, int rewardId) {
+		UserEntity user = repo.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
+		RewardEntity reward = r.findById(rewardId)
+				.orElseThrow(() -> new NoSuchElementException("Reward not found"));
+		int userPoints = user.getAchievementPoint();
+		int rewardPoints = reward.getPoints();
+		
+		if (userPoints >= rewardPoints) {
+			List<RewardEntity> userItems = user.getItems();
+			userItems.add(reward);
+			user.setItems(userItems);
+			
+			user.setAchievementPoint(userPoints - rewardPoints);
+			repo.save(user);
+			
+			return "User #" + userId + " successfully bought Reward #" + rewardId;
+		} else {
+			return "Insufficient achievement points to buy Reward #" + rewardId;
 		}
 	}
 	

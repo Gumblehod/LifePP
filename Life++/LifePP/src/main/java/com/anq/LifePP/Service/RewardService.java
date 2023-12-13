@@ -28,7 +28,7 @@ public class RewardService {
 				.orElseThrow(() -> new NoSuchElementException("Reward " + id + "doesn't exist."));
 
 		e.setName(c.getName());
-		e.setQuantity(c.getQuantity());
+		e.setPoints(c.getPoints());
 
 		return repo.save(e);
 	}
