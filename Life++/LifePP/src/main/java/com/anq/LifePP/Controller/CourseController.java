@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.QuestEntity;
-import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Service.CourseService;
 import com.anq.LifePP.Service.QuestService;
 
@@ -57,27 +56,11 @@ public class CourseController {
     	return s.deleteCourse(sid);
     }
 
-	@GetMapping("/{courseId}/enrolled-users")
-    public List<UserEntity> getUsersEnrolledInCourse(@PathVariable int courseId) {
-        try {
-            return s.getUsersEnrolledInCourse(courseId);
-        } catch (NoSuchElementException e) {
-            return Collections.emptyList();
-        }
-    }
     @PostMapping("/{courseId}/addquest")
     public CourseEntity addQuestToCourse(@PathVariable int courseId, @RequestBody QuestEntity quest) {
         CourseEntity updatedCourse = s.addQuestToCourse(courseId, quest);
-
-        // Save the quest via QuestService
-        questService.insertQuest(quest);
-
         return updatedCourse;
     }
 
-    @GetMapping("/{courseId}/quests")
-    public List<QuestEntity> getQuestsInCourse(@PathVariable int courseId) {
-        return s.getQuestsInCourse(courseId);
-    }
-
+    
 }

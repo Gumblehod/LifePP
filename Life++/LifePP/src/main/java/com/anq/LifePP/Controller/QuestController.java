@@ -21,32 +21,33 @@ import com.anq.LifePP.Service.QuestService;
 @RequestMapping("/quest")
 @CrossOrigin(origins = "http://localhost:3000")
 public class QuestController {
-	
+
 	@Autowired
 	QuestService s;
-	
+
 	@GetMapping("/print")
-	public String hello(){
+	public String hello() {
 		return "It works";
 	}
-	
+
 	@PostMapping("/insert")
 	public QuestEntity insertQuest(@RequestBody QuestEntity e) {
 		return s.insertQuest(e);
 	}
+
+	@GetMapping("/get")
+	public List<QuestEntity> getAllQuests() {
+		return s.getallQuest();
+	}
+
+	@PutMapping("/update")
+	public QuestEntity updateStudent(@RequestParam int sid, @RequestBody QuestEntity n) {
+		return s.updateQuest(sid, n);
+	}
+
+	@DeleteMapping("/delete/{sid}")
+	public String deleteStudent(@PathVariable int sid) {
+		return s.deleteQuest(sid);
+	}
 	
-    @GetMapping("/get")
-    public List<QuestEntity> getAllQuests(){
-    	return s.getallQuest();
-    }
-    
-    @PutMapping("/update")
-    public QuestEntity updateStudent(@RequestParam int sid, @RequestBody QuestEntity n){
-    	return s.updateQuest(sid, n);
-    }
-    
-    @DeleteMapping("/delete/{sid}")
-    public String deleteStudent(@PathVariable int sid) {
-    	return s.deleteQuest(sid);
-    }
 }

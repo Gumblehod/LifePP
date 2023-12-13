@@ -6,7 +6,9 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.QuestEntity;
+import com.anq.LifePP.Repository.AchievementRepository;
 import com.anq.LifePP.Repository.QuestRepository;
 
 @Service
@@ -14,6 +16,8 @@ public class QuestService {
 
 	@Autowired
 	QuestRepository repo;
+	@Autowired
+	AchievementRepository a;
 
 	public QuestEntity insertQuest(QuestEntity e) {
 		return repo.save(e);
@@ -49,4 +53,5 @@ public class QuestService {
 			return "Quest #" + id + "has been deleted";
 		}
 	}
+
 }

@@ -55,20 +55,6 @@ public class CourseService {
 		}
 	}
 
-	public List<UserEntity> getUsersEnrolledInCourse(int courseId) {
-        CourseEntity course = repo.findById(courseId)
-                .orElseThrow(() -> new NoSuchElementException("Course " + courseId + " doesn't exist."));
-
-        return course.getEnrolledUsers();
-    }
-
-	public List<QuestEntity> getQuestsInCourse(int courseId) {
-        CourseEntity course = repo.findById(courseId)
-                .orElseThrow(() -> new NoSuchElementException("Course " + courseId + " doesn't exist."));
-
-        return course.getQuests();
-    }
-
 	public CourseEntity addQuestToCourse(int courseId, QuestEntity quest) {
         CourseEntity course = repo.findById(courseId)
                 .orElseThrow(() -> new NoSuchElementException("Course " + courseId + " doesn't exist."));
