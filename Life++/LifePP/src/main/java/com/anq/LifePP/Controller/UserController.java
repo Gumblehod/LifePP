@@ -68,4 +68,9 @@ public class UserController {
             @RequestParam(required = false) boolean isCompleted) {
         return s.attemptQuest(userId, questId, isCompleted);
     }
+
+    @DeleteMapping("/leave/{userId}/{courseId}")
+    public String leaveCourse(@PathVariable int userId, @PathVariable int courseId) {
+        return s.leaveCourse(userId, courseId);
+    }
 }

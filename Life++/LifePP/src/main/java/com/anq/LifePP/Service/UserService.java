@@ -158,4 +158,27 @@ public class UserService {
             return "Quest #" + questId + " not found";
         }
     }
+	public String leaveCourse(int userId, int courseId) {
+		UserEntity user = repo.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
+		CourseEntity course = crepo.findById(courseId)
+				.orElseThrow(() -> new NoSuchElementException("Course not found"));
+	
+		if (user.getJoinedCourses().contains(course)) {
+			user.getJoinedCourses().remove(course);
+			course.getEnrolledUsers().remove(user);
+	
+			int currentParticipants = course.getParticipants();
+			course.setParticipants(currentParticipants - 1);
+	
+			repo.save(user);
+			crepo.save(course);
+	
+			return "User #" + userId + " has left Course #" + courseId + ". Participants: "
+					+ (currentParticipants - 1) + "/" + course.getMax();
+		} else {
+			return "User #" + userId + " is not enrolled in Course #" + courseId;
+		}
+	}
+	
 }
