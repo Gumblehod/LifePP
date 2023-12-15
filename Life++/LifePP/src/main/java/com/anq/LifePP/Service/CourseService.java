@@ -17,15 +17,15 @@ public class CourseService {
 	@Autowired
 	CourseRepository repo;
 	@Autowired
-    CoachService cs;
+	CoachService cs;
 	@Autowired
-    private QuestService qs;
+	private QuestService qs;
 
 	public CourseEntity insertCourse(CourseEntity course) {
 		CoachEntity c = course.getCoach();
-        c.addCourseToCourses(course);
-        return repo.save(course);
-    }
+		c.addCourseToCourses(course);
+		return repo.save(course);
+	}
 
 	public List<CourseEntity> getallCourse() {
 		return repo.findAll();
@@ -55,17 +55,23 @@ public class CourseService {
 	}
 
 	public CourseEntity addQuestToCourse(int courseId, QuestEntity quest) {
-        CourseEntity course = repo.findById(courseId)
-                .orElseThrow(() -> new NoSuchElementException("Course " + courseId + " doesn't exist."));
+		CourseEntity course = repo.findById(courseId)
+				.orElseThrow(() -> new NoSuchElementException("Course " + courseId + " doesn't exist."));
 
-        quest.setCourse(course);
-        course.getQuests().add(quest);
+		quest.setCourse(course);
+		course.getQuests().add(quest);
 		qs.insertQuest(quest);
 
-        return repo.save(course);
-    }
+		return repo.save(course);
+	}
 
-	
+	public CourseEntity getCourseById(int id) {
+		return repo.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Course with ID " + id + " not found."));
+	}
+
+	public List<QuestEntity> getQuestsByCourseId(int id) {
+		CourseEntity course = getCourseById(id);
+		return course.getQuests();
+	}
 }
-
-

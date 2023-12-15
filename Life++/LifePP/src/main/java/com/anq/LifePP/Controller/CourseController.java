@@ -58,5 +58,8 @@ public class CourseController {
         return updatedCourse;
     }
 
-    
+    @GetMapping("/{id}/getquests")
+    public List<QuestEntity> getQuestsByCourseId(@PathVariable int id) {
+        return s.getQuestsByCourseId(id);
+    }
 }

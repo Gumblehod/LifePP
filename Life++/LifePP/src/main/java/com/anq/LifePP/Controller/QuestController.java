@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Service.QuestService;
 
