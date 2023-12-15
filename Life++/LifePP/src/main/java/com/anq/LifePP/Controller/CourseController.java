@@ -1,8 +1,6 @@
 package com.anq.LifePP.Controller;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Service.CourseService;
-import com.anq.LifePP.Service.QuestService;
+
 
 @RestController
 @RequestMapping("/course")
@@ -28,8 +26,6 @@ public class CourseController {
 	
 	@Autowired
 	CourseService s;
-	@Autowired
-    private QuestService questService;
 
 	@GetMapping("/print")
 	public String hello(){

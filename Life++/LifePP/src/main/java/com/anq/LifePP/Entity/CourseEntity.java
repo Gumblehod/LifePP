@@ -66,7 +66,7 @@ public class CourseEntity {
 	@ManyToMany
 	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
 	@JsonIgnoreProperties({ "enrolledUsers", "quests", "joinedCourses", "ongoingQuests", "ongoingUsers",
-			"completedQuests" }) // Updated to include "quests"
+			"completedQuests" })
 	private List<UserEntity> enrolledUsers = new ArrayList<>();
 
 	public List<UserEntity> getEnrolledUsers() {
