@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.anq.LifePP.Entity.CoachEntity;
+import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Repository.CoachRepository;
 import com.anq.LifePP.Repository.CourseRepository;
 
@@ -61,4 +62,15 @@ public class CoachService {
         return repo.findByUsername(username);
     }
 
+	public List<CourseEntity> getCoursesByCoachId(int coachId) {
+
+        CoachEntity c = repo.findById(coachId)
+				.orElseThrow(() -> new NoSuchElementException("Coach " + coachId + "does not exist"));
+
+        if (c != null) {
+            return c.getCourses();
+        }
+
+		return null;
+    }
 }

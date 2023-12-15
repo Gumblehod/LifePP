@@ -78,4 +78,9 @@ public class UserController {
     public String buyReward(@PathVariable int userId, @PathVariable int rewardId) {
         return s.buyReward(userId, rewardId);
     }
+
+    @GetMapping("/isenrolled/{userId}/{courseId}")
+    public boolean isEnrolled(@PathVariable int userId, @PathVariable int courseId) {
+        return s.isEnrolled(userId, courseId);
+    }
 }

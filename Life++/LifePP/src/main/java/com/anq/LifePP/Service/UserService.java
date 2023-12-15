@@ -210,4 +210,15 @@ public class UserService {
 		}
 	}
 	
+	public boolean isEnrolled(int userId, int courseId) {
+        UserEntity user = repo.findById(userId).orElse(null);
+        if (user != null) {
+            for (CourseEntity course : user.getJoinedCourses()) {
+                if (course.getCourseID() == courseId) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

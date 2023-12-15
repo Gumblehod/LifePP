@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anq.LifePP.Entity.CoachEntity;
+import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Service.CoachService;
 
 @RestController
@@ -49,4 +50,9 @@ public class CoachController {
     public String deleteCoach(@PathVariable int sid) {
     	return s.deleteCoach(sid);
     }
+	@GetMapping("/getcourses/{coachid}")
+    public List<CourseEntity> getCoursesByCoachId(@PathVariable int coachid) {
+        return s.getCoursesByCoachId(coachid);
+    }
+	
 }
