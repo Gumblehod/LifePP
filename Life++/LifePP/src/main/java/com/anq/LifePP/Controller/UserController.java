@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anq.LifePP.Entity.CourseEntity;
 import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Service.UserService;
 
@@ -82,5 +83,10 @@ public class UserController {
     @GetMapping("/isenrolled/{userId}/{courseId}")
     public boolean isEnrolled(@PathVariable int userId, @PathVariable int courseId) {
         return s.isEnrolled(userId, courseId);
+    }
+
+    @GetMapping("/enrolledcourses/{userId}")
+    public List<CourseEntity> enrolledCourses(@PathVariable int userId){
+        return s.enrolledCourses(userId);
     }
 }

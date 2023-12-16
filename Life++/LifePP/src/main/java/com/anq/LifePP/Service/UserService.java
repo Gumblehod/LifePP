@@ -221,4 +221,11 @@ public class UserService {
         }
         return false;
     }
+
+		public List<CourseEntity> enrolledCourses(int userId) {
+       	UserEntity user = repo.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
+        return user.getJoinedCourses();
+    }
+
 }
