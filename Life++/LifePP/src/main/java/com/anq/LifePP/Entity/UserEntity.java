@@ -78,7 +78,7 @@ public class UserEntity {
 
 	@ManyToMany
 	@JoinTable(name = "user_quest", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "quest_id"))
-	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests","enrolledUsers", "course"}) // Updated to include "quests"
+	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests","enrolledUsers", "course","joinedCourses"}) // Updated to include "quests"
 	private List<QuestEntity> ongoingQuests = new ArrayList<>();
 
 	public List<QuestEntity> getOngoingQuests() {
@@ -91,7 +91,7 @@ public class UserEntity {
 
 	@ManyToMany
 	@JoinTable(name = "user_completed_quest", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "quest_id"))
-	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests","enrolledUsers", "course" }) // Ignore these attributes in QuestEntity
+	@JsonIgnoreProperties({ "ongoingUsers", "completedByUsers", "quests","enrolledUsers", "course", "joinedCourses","completedByUsers"}) // Ignore these attributes in QuestEntity
 	private List<QuestEntity> completedQuests = new ArrayList<>();
 
 	public List<QuestEntity> getCompletedQuests() {

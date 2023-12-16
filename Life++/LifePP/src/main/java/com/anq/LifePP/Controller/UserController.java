@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.CourseEntity;
+import com.anq.LifePP.Entity.QuestEntity;
 import com.anq.LifePP.Entity.UserEntity;
 import com.anq.LifePP.Service.UserService;
 
@@ -88,5 +90,20 @@ public class UserController {
     @GetMapping("/enrolledcourses/{userId}")
     public List<CourseEntity> enrolledCourses(@PathVariable int userId){
         return s.enrolledCourses(userId);
+    }
+
+    @GetMapping("/ongoingQuests/{userId}")
+    public List<QuestEntity> ongoingQuests(@PathVariable int userId){
+        return s.ongoingQuests(userId);
+    }
+
+    @GetMapping("/completedQuests/{userId}")
+    public List<QuestEntity> completedQuest(@PathVariable int userId){
+        return s.completeQuests(userId);
+    }
+    
+    @GetMapping("/getAchievements/{userId}")
+    public List<AchievementEntity> getAchievements(@PathVariable int userId){
+        return s.getAchievements(userId);
     }
 }

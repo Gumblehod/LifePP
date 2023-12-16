@@ -5,6 +5,8 @@ import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.anq.LifePP.Entity.AchievementEntity;
 import com.anq.LifePP.Entity.CourseEntity;
@@ -70,7 +72,7 @@ public class UserService {
 		if (updatedUser.getAchievementPoint() != 0) {
 			existingUser.setAchievementPoint(updatedUser.getAchievementPoint());
 		}
-		
+
 		return repo.save(existingUser);
 	}
 
@@ -116,78 +118,80 @@ public class UserService {
 		}
 	}
 
-	 public UserEntity forgotPassword(String usernameOrEmail, String newPassword) {
-        UserEntity user = repo.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+	public UserEntity forgotPassword(String usernameOrEmail, String newPassword) {
+		UserEntity user = repo.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        user.setPassword(newPassword);
-        return repo.save(user);
-    }
+		user.setPassword(newPassword);
+		return repo.save(user);
+	}
 
 	public String attemptQuest(int userId, int questId, boolean isCompleted) {
-        UserEntity user = repo.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+		UserEntity user = repo.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
 
 		QuestEntity quest = q.findById(questId).get();
 
-        if (quest != null) {
-            if (!isCompleted) {
-                if (!user.getOngoingQuests().contains(quest)) {
-                    user.getOngoingQuests().add(quest);
-                    quest.getOngoingUsers().add(user);
+		if (quest != null) {
+			if (!isCompleted) {
+				if (!user.getOngoingQuests().contains(quest)) {
+					user.getOngoingQuests().add(quest);
+					quest.getOngoingUsers().add(user);
 
-                    repo.save(user);
+					repo.save(user);
 
-                    return "User #" + userId + " has started Quest #" + questId;
-                } else {
-                    return "User #" + userId + " is already attempting Quest #" + questId;
-                }
-            } else {
-                if (user.getOngoingQuests().contains(quest)) {
-                    user.getOngoingQuests().remove(quest);
-                    quest.getOngoingUsers().remove(user);
-                    
-                    user.getCompletedQuests().add(quest);
-                    quest.getCompletedByUsers().add(user);
+					return "User #" + userId + " has started Quest #" + questId;
+				} else {
+					return "User #" + userId + " is already attempting Quest #" + questId;
+				}
+			} else {
+				if (user.getOngoingQuests().contains(quest)) {
+					user.getOngoingQuests().remove(quest);
+					quest.getOngoingUsers().remove(user);
 
-                    AchievementEntity a = quest.getAchievement();
+					user.getCompletedQuests().add(quest);
+					quest.getCompletedByUsers().add(user);
+
+					AchievementEntity a = quest.getAchievement();
 					int points = a.getPoint();
-                    user.setAchievementPoint(user.getAchievementPoint() + points);
+					user.setAchievementPoint(user.getAchievementPoint() + points);
 					user.getAchievements().add(a);
-					
-                    repo.save(user);
 
-                    return "User #" + userId + " has completed Quest #" + questId + ". Points added: " + points;
-                } else {
-                    return "User #" + userId + " is not attempting Quest #" + questId;
-                }
-            }
-        } else {
-            return "Quest #" + questId + " not found";
-        }
-    }
+					repo.save(user);
+
+					return "User #" + userId + " has completed Quest #" + questId + ". Points added: " + points;
+				} else {
+					return "User #" + userId + " is not attempting Quest #" + questId;
+				}
+			}
+		} else {
+			return "Quest #" + questId + " not found";
+		}
+	}
+
 	public String leaveCourse(int userId, int courseId) {
 		UserEntity user = repo.findById(userId)
 				.orElseThrow(() -> new NoSuchElementException("User not found"));
 		CourseEntity course = crepo.findById(courseId)
 				.orElseThrow(() -> new NoSuchElementException("Course not found"));
-	
+
 		if (user.getJoinedCourses().contains(course)) {
 			user.getJoinedCourses().remove(course);
 			course.getEnrolledUsers().remove(user);
-	
+
 			int currentParticipants = course.getParticipants();
 			course.setParticipants(currentParticipants - 1);
-	
+
 			repo.save(user);
 			crepo.save(course);
-	
+
 			return "User #" + userId + " has left Course #" + courseId + ". Participants: "
 					+ (currentParticipants - 1) + "/" + course.getMax();
 		} else {
 			return "User #" + userId + " is not enrolled in Course #" + courseId;
 		}
 	}
+
 	public String buyReward(int userId, int rewardId) {
 		UserEntity user = repo.findById(userId)
 				.orElseThrow(() -> new NoSuchElementException("User not found"));
@@ -195,37 +199,54 @@ public class UserService {
 				.orElseThrow(() -> new NoSuchElementException("Reward not found"));
 		int userPoints = user.getAchievementPoint();
 		int rewardPoints = reward.getPoints();
-		
+
 		if (userPoints >= rewardPoints) {
 			List<RewardEntity> userItems = user.getItems();
 			userItems.add(reward);
 			user.setItems(userItems);
-			
+
 			user.setAchievementPoint(userPoints - rewardPoints);
 			repo.save(user);
-			
+
 			return "User #" + userId + " successfully bought Reward #" + rewardId;
 		} else {
 			return "Insufficient achievement points to buy Reward #" + rewardId;
 		}
 	}
-	
+
 	public boolean isEnrolled(int userId, int courseId) {
-        UserEntity user = repo.findById(userId).orElse(null);
-        if (user != null) {
-            for (CourseEntity course : user.getJoinedCourses()) {
-                if (course.getCourseID() == courseId) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+		UserEntity user = repo.findById(userId).orElse(null);
+		if (user != null) {
+			for (CourseEntity course : user.getJoinedCourses()) {
+				if (course.getCourseID() == courseId) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-		public List<CourseEntity> enrolledCourses(int userId) {
-       	UserEntity user = repo.findById(userId)
+	public List<CourseEntity> enrolledCourses(int userId) {
+		UserEntity user = repo.findById(userId)
 				.orElseThrow(() -> new NoSuchElementException("User not found"));
-        return user.getJoinedCourses();
-    }
+		return user.getJoinedCourses();
+	}
 
+	public List<QuestEntity> ongoingQuests(int userId) {
+		UserEntity user = repo.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
+		return user.getOngoingQuests();
+	}
+
+	public List<QuestEntity> completeQuests(int userId) {
+		UserEntity user = repo.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
+		return user.getCompletedQuests();
+	}
+
+	public List<AchievementEntity> getAchievements(int userId) {
+		UserEntity user = repo.findById(userId)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
+		return user.getAchievements();
+	}
 }
