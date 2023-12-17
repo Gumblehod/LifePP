@@ -18,7 +18,7 @@ public class QuestService {
 	QuestRepository repo;
 	@Autowired
 	AchievementRepository a;
-	
+
 	public QuestEntity insertQuest(QuestEntity e) {
 		return repo.save(e);
 	}
@@ -28,17 +28,33 @@ public class QuestService {
 	}
 
 	public QuestEntity updateQuest(int id, QuestEntity c) {
-		QuestEntity e = repo.findById(id)
-				.orElseThrow(() -> new NoSuchElementException("Quest " + id + "doesn't exist."));
+		QuestEntity quest = repo.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Quest " + id + " doesn't exist."));
 
-		e.setTitle(c.getTitle());
-		e.setAchievement(c.getAchievement());
-		e.setCompleted(c.isCompleted());
-		e.setDescription(c.getDescription());
-		e.setMaxProgress(c.getProgress());
-		e.setProgress(c.getProgress());
+		// Update properties if they are not null in the updatedQuest
 
-		return repo.save(e);
+		if (c.getTitle() != null) {
+			quest.setTitle(c.getTitle());
+		}
+
+		if (c.getAchievement() != null) {
+			quest.setAchievement(c.getAchievement());
+		}
+
+		if (c.getDescription() != null) {
+			quest.setDescription(c.getDescription());
+		}
+
+		// Assuming 0 is not a valid value for progress
+		if (c.getProgress() != 0) {
+			quest.setProgress(c.getProgress());
+		}
+
+		if (c.getMaxProgress() != 0) {
+			quest.setMaxProgress(c.getMaxProgress());
+		}
+
+		return repo.save(quest);
 	}
 
 	public String deleteQuest(int id) {
@@ -54,12 +70,11 @@ public class QuestService {
 		}
 	}
 
-	public QuestEntity addAchievement(int qid,int aid){
+	public QuestEntity addAchievement(int qid, int aid) {
 		AchievementEntity ar = a.findById(aid)
 				.orElseThrow(() -> new NoSuchElementException("Achievement " + aid + "does not exist"));
 		QuestEntity c = repo.findById(qid)
 				.orElseThrow(() -> new NoSuchElementException("Quest " + qid + "does not exist"));
-
 
 		c.setAchievement(ar);
 		repo.save(c);
